@@ -1,28 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Kinect;
 
 namespace PennieNet
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        KinectSensor _sensor;
+        MultiSourceFrameReader _reader;
+        IList<Body> bodies;
+        CoordinateMapper cm;
+        private bool setup = false;
+        private bool _hasUser = false;
+        private Body User;
+        private ulong UserId;
+
+        
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _sensor = KinectSensor.GetDefault();
+            if(_sensor != null)
+            {
+                _sensor.Open();
+
+                _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Body | FrameSourceTypes.Depth);
+                _reader.MultiSourceFrameArrived += _reader_MultiSourceFrameArrived;
+
+                if (!setup)
+                {
+                    //this.CreateBones();
+                }
+            }
+        }
+
+        private void _reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            var refFrame = e.FrameReference.AcquireFrame();
+            using(var frame = refFrame.BodyFrameReference.AcquireFrame())
+            {
+                bodies = new Body[frame.BodyCount];
+                frame.GetAndRefreshBodyData(bodies);
+
+                if (!_hasUser)
+                {
+                    User = (from bd in bodies where bd.IsTracked select bd).FirstOrDefault();
+                    _hasUser = true;
+                }
+                else
+                {
+                    User = (from bd in bodies where bd.IsTracked && bd.TrackingId == UserId select bd).FirstOrDefault(); 
+                }
+                
+                if(User != null)
+                {
+                    UserId = User.TrackingId;
+                    //USER -> FOLLOW;
+                }else
+                {
+                    _hasUser = false;
+                }
+            }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if(_sensor != null)
+            {
+                _sensor.Close();
+                _sensor = null;
+            }
+
+            if(_reader != null)
+            {
+                _reader.Dispose();
+                _reader = null;
+            }
         }
     }
 }
