@@ -12,11 +12,14 @@ namespace PennieNet
         KinectSensor _sensor;
         MultiSourceFrameReader _reader;
         IList<Body> bodies;
-        CoordinateMapper cm;
+        //CoordinateMapper cm; // For later use if I need it
         private bool setup = false;
         private bool _hasUser = false;
         private Body User;
         private ulong UserId;
+        FrameDescription fd;
+        private float depthWidth;
+        private float depthHeight;
 
         
         public MainWindow()
@@ -34,8 +37,11 @@ namespace PennieNet
                 _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Body | FrameSourceTypes.Depth);
                 _reader.MultiSourceFrameArrived += _reader_MultiSourceFrameArrived;
 
+                fd = _sensor.DepthFrameSource.FrameDescription;
+                depthWidth = fd.Width;
+                depthHeight = fd.Height;
                 if (!setup)
-                {
+                { 
                     //this.CreateBones();
                 }
             }
@@ -63,7 +69,8 @@ namespace PennieNet
                 {
                     UserId = User.TrackingId;
                     //USER -> FOLLOW;
-                }else
+                    User.Follow(depthWidth, depthHeight);
+                } else
                 {
                     _hasUser = false;
                 }
