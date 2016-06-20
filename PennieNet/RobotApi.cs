@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PennieNet
 {
-    public class RobotApi
+    class RobotApi
     {
         string hostip;
         int hostport = 3000;
@@ -22,11 +24,16 @@ namespace PennieNet
             hosturi = hostip + ":" + hostport.ToString() + "/api/";
         }
 
-        public void IssueCmd(string url)
+        public async void IssueCmd(string url)
         {
-            req = WebRequest.Create(hosturi + url); 
-            req.Proxy = null;
-            var resp = req.GetResponse(); 
+            using(var c = new HttpClient())
+            {
+                c.BaseAddress = new Uri(hosturi);
+                c.DefaultRequestHeaders.Accept.Clear();
+                c.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage resp = await c.GetAsync(url);
+            }
         }
         public void Dispose()
         {
