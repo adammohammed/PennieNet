@@ -99,6 +99,7 @@ namespace PennieNet
                 } else
                 {
                     _hasUser = false;
+                    BodyExtensions.commander.IssueCmd("stop");
                 }
             }
         }
