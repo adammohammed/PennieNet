@@ -93,6 +93,9 @@ namespace PennieNet
                     
                     //USER -> FOLLOW;
                     User.Follow(depthWidth, depthHeight);
+
+                    // Update Text 
+                    this.commandStatus.Text = BodyExtensions.cmd;
                 } else
                 {
                     _hasUser = false;
