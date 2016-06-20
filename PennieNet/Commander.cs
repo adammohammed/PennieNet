@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
-using System.IO;
+
 
 namespace PennieNet
 {
@@ -34,34 +36,31 @@ namespace PennieNet
         } 
         public void IssueCmd(string input)
         {
-            char output;
+            char[] output = new char[1];
             if (input.Equals("left"))
             {
-                output = 'a';
+                output[0] = 'a';
             }
             else if (input.Equals("right"))
             {
-                output = 'd';
+                output[0] = 'd';
             }
             else if (input.Equals("fwd"))
             {
-                output = 'w'; 
+                output[0] = 'w'; 
             }
             else if (input.Equals("rev"))
             {
-                output = 's'; 
+                output[0] = 's'; 
             }
             else
             {
-                output = 'p';
+                output[0] = 'p';
             }
 
             if (bluetoothStream != null)
             {
-                using (var c = new StreamWriter(bluetoothStream))
-                {
-                    c.Write(output);
-                }
+                bluetoothStream.Write(Encoding.Unicode.GetBytes(output),0,1);
             }
         }
 

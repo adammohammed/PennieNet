@@ -50,6 +50,7 @@ namespace PennieNet
                     //this.CreateBones();
                 }
                 csvLogger = new CSVLogger();
+                stopWatch = new Stopwatch();
                 stopWatch.Start();
                 lastTime = stopWatch.ElapsedMilliseconds;
             }
@@ -83,6 +84,10 @@ namespace PennieNet
                     {
                         csvLogger.Stop(batchName +".csv");
                         lastTime = stopWatch.ElapsedMilliseconds;
+                    }
+                    else
+                    {
+                        csvLogger.Update(User);
                     }
                     UserId = User.TrackingId;
                     
