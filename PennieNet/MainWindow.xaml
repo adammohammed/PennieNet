@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
     <Grid>
-        <TextBlock Name="commandStatus" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center">Stuff</TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="152*"/>
+            <ColumnDefinition Width="108*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="223*"/>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="51*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Name="commandStatus" FontSize="36" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="113,134,117,41" Grid.Column="1" Grid.ColumnSpan="2" Height="48" Width="72">Stuff</TextBlock>
+        <TextBox x:Name="hostaddr" HorizontalAlignment="Center" Height="24" Margin="0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="1"/>
+        <TextBox x:Name="hostport" HorizontalAlignment="Center" Height="24" Margin="0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="120" Grid.Row="1" Grid.Column="2"/>
+        <Button x:Name="ChangeIp" Content="Button" Grid.Column="1" Margin="0,5" Grid.Row="2" Grid.ColumnSpan="2" Click="ipSet_Clicked"/>
     </Grid>
 </Window>

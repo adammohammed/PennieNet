@@ -124,5 +124,11 @@ namespace PennieNet
                 BodyExtensions.commander = null;
             }
         }
+
+        private void ipSet_Clicked(object sender, RoutedEventArgs e)
+        {
+            BodyExtensions.commander = new RobotApi(this.hostaddr.ToString(), int.Parse(this.hostport.Text));
+
+        }
     }
 }
