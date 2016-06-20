@@ -14,7 +14,7 @@ namespace PennieNet
         private BluetoothClient bc;
         private Guid serviceClass;
         private BluetoothEndPoint endPoint;
- 
+        private Stream bluetoothStream;
 
         public Commander(string id="984FEE041791")
         {
@@ -25,6 +25,7 @@ namespace PennieNet
             try
             {
                 bc.Connect(endPoint);
+                bluetoothStream = bc.GetStream();
             }catch (Exception)
             {
                 bc = null;
@@ -55,9 +56,12 @@ namespace PennieNet
                 output = 'p';
             }
 
-            using(var c = new StreamWriter(bc.GetStream()))
-            { 
-                c.Write(output);
+            if (bluetoothStream != null)
+            {
+                using (var c = new StreamWriter(bluetoothStream))
+                {
+                    c.Write(output);
+                }
             }
         }
 
