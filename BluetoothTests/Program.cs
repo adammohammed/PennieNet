@@ -13,7 +13,6 @@ namespace BluetoothTests
         static void Main(string[] args)
         {
             cmd = new Commander();
-            cmd.Connect();
             for (;;)
             {
                 if (cmd != null)
