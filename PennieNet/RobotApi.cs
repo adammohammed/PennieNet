@@ -21,7 +21,7 @@ namespace PennieNet
             hostip = ip;
             hostport = port;
 
-            hosturi = hostip + ":" + hostport.ToString() + "/api/";
+            hosturi = "http://"+ hostip + ":" + hostport.ToString() + "/";
         }
 
         public async void IssueCmd(string url)
@@ -32,7 +32,7 @@ namespace PennieNet
                 c.DefaultRequestHeaders.Accept.Clear();
                 c.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage resp = await c.GetAsync(url);
+                HttpResponseMessage resp = await c.GetAsync("api/" + url);
             }
         }
         public void Dispose()
