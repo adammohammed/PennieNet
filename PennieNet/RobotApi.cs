@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PennieNet
 {
-    class RobotApi
+    public class RobotApi
     {
         string hostip;
         int hostport = 3000;
