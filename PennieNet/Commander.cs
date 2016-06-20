@@ -33,35 +33,35 @@ namespace PennieNet
                 bc = null;
             }
 
-        } 
+        }
         public void IssueCmd(string input)
         {
-            //char[] output = new char[1];
-            char output = 'p';
+            char[] output = new char[1];
+            //char output = 'p';
             if (input.Equals("left"))
             {
-                output = 'a';
+                output[0] = 'a';
             }
             else if (input.Equals("right"))
             {
-                output = 'd';
+                output[0] = 'd';
             }
             else if (input.Equals("fwd"))
             {
-                output = 'w'; 
+                output[0] = 'w';
             }
             else if (input.Equals("rev"))
             {
-                output = 's'; 
+                output[0] = 's';
             }
             else
             {
-                output = 'p';
+                output[0] = 'p';
             }
 
-            using(var c = new StreamWriter(bluetoothStream))
+            if (bluetoothStream != null)
             {
-                c.Write(output);
+                bluetoothStream.Write(Encoding.Unicode.GetBytes(output), 0, 1);
             }
         }
 
