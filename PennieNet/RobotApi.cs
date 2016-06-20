@@ -16,7 +16,7 @@ namespace PennieNet
         int hostport = 3000;
         string hosturi;
         WebRequest req;
-        public RobotApi(string ip, int port = 3000)
+        public RobotApi(string ip, int port = 9005)
         {
             hostip = ip;
             hostport = port;
@@ -32,7 +32,14 @@ namespace PennieNet
                 c.DefaultRequestHeaders.Accept.Clear();
                 c.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage resp = await c.GetAsync("api/" + url);
+                try
+                {
+                    HttpResponseMessage resp = await c.GetAsync("api/" + url);
+                }
+                catch (WebException)
+                {
+                    return;
+                }
             }
         }
         public void Dispose()
