@@ -14,6 +14,10 @@ namespace PennieNet
 
         public static void Follow(this Body b, float cameraWidth, float cameraHeight)
         {
+            if(commander == null)
+            {
+                commander = new RobotApi("104.39.49.20");
+            }
             IReadOnlyDictionary<JointType, Joint> joints = b.Joints;
 
             Joint Head = joints[JointType.Head];

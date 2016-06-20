@@ -103,7 +103,9 @@ namespace PennieNet
                     else
                     {
                         _hasUser = false;
-                        BodyExtensions.commander.IssueCmd("stop");
+                        if(BodyExtensions.commander != null) {
+                            BodyExtensions.commander.IssueCmd("stop");
+                        }
                     }
                 }
             }
