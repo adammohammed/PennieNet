@@ -10,6 +10,7 @@ namespace PennieNet
         public static float stayCloseRange = 1000.0f;
         public static float minTurnAngle = (float) Math.Abs(15.0 * 3.14 / 180.0);
         public static string cmd = "";
+        public static Commander commander = new Commander();
 
         public static void Follow(this Body b, float cameraWidth, float cameraHeight)
         {
@@ -64,7 +65,8 @@ namespace PennieNet
             {
                 cmd = "stay";
             }
-            
+
+            commander.IssueCmd(cmd);
         }
     }
 }
