@@ -59,47 +59,52 @@ namespace PennieNet
         private void _reader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
         {
             var refFrame = e.FrameReference.AcquireFrame();
-            using(var frame = refFrame.BodyFrameReference.AcquireFrame())
+            using (var frame = refFrame.BodyFrameReference.AcquireFrame())
             {
-                bodies = new Body[frame.BodyCount];
-                frame.GetAndRefreshBodyData(bodies);
+                if (frame != null)
+                {
+                    bodies = new Body[frame.BodyCount];
+                    frame.GetAndRefreshBodyData(bodies);
 
-                if (!_hasUser)
-                {
-                    User = (from bd in bodies where bd.IsTracked select bd).FirstOrDefault();
-                    _hasUser = true;
-                }
-                else
-                {
-                    User = (from bd in bodies where bd.IsTracked && bd.TrackingId == UserId select bd).FirstOrDefault(); 
-                }
-                
-                if(User != null)
-                {
-                    if (!csvLogger.IsRecording)
+                    if (!_hasUser)
                     {
-                        batchName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                        csvLogger.Start(batchName);
-                    }else if( csvLogger.IsRecording && (stopWatch.ElapsedMilliseconds - lastTime) % 3000 == 0)
-                    {
-                        csvLogger.Stop(batchName +".csv");
-                        lastTime = stopWatch.ElapsedMilliseconds;
+                        User = (from bd in bodies where bd.IsTracked select bd).FirstOrDefault();
+                        _hasUser = true;
                     }
                     else
                     {
-                        csvLogger.Update(User);
+                        User = (from bd in bodies where bd.IsTracked && bd.TrackingId == UserId select bd).FirstOrDefault();
                     }
-                    UserId = User.TrackingId;
-                    
-                    //USER -> FOLLOW;
-                    User.Follow(depthWidth, depthHeight);
 
-                    // Update Text 
-                    this.commandStatus.Text = BodyExtensions.cmd;
-                } else
-                {
-                    _hasUser = false;
-                    BodyExtensions.commander.IssueCmd("stop");
+                    if (User != null)
+                    {
+                        if (!csvLogger.IsRecording)
+                        {
+                            batchName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+                            csvLogger.Start(batchName);
+                        }
+                        else if (csvLogger.IsRecording && (stopWatch.ElapsedMilliseconds - lastTime) % 3000 == 0)
+                        {
+                            csvLogger.Stop(batchName + ".csv");
+                            lastTime = stopWatch.ElapsedMilliseconds;
+                        }
+                        else
+                        {
+                            csvLogger.Update(User);
+                        }
+                        UserId = User.TrackingId;
+
+                        //USER -> FOLLOW;
+                        User.Follow(depthWidth, depthHeight);
+
+                        // Update Text 
+                        this.commandStatus.Text = BodyExtensions.cmd;
+                    }
+                    else
+                    {
+                        _hasUser = false;
+                        BodyExtensions.commander.IssueCmd("stop");
+                    }
                 }
             }
         }
