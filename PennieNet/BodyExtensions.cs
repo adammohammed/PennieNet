@@ -16,7 +16,7 @@ namespace PennieNet
         {
             if(commander == null)
             {
-                commander = new RobotApi("104.39.49.20");
+                commander = new RobotApi("104.39.84.217");
             }
             IReadOnlyDictionary<JointType, Joint> joints = b.Joints;
 
