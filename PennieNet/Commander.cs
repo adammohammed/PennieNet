@@ -10,7 +10,7 @@ using InTheHand.Net.Sockets;
 
 namespace PennieNet
 {
-    public class Commander
+    public class Commander : ICommander
     {
         private BluetoothAddress bAddr;
         private BluetoothClient bc;

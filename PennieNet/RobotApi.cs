@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace PennieNet
 {
-    public class RobotApi
+    public class RobotApi : ICommander
     {
         string hostip;
         int hostport = 3000;
         string hosturi;
         WebRequest req;
+ 
         public RobotApi(string ip, int port = 9005)
         {
             hostip = ip;
