@@ -11,7 +11,6 @@ namespace PennieNet
     {
         // Saves Kinects Data to CSV to Desktop 
         int _current = 0;
-
         bool _hasEnumeratedJoints = false;
 
         public bool IsRecording { get; protected set; }
@@ -19,11 +18,11 @@ namespace PennieNet
         public string Folder { get; protected set; }
 
         public string Result { get; protected set; }
-        public Stopwatch stopwatch;
-        public long timestamp = 0;
-        public Body bd;
-        public int nodes = 0;
-        public string CSVWriteDirectory;
+        private Stopwatch stopwatch;
+        private long timestamp = 0;
+        private Body bd;
+        private int nodes = 0;
+        private string CSVWriteDirectory;
         private string DesktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
 
@@ -52,9 +51,6 @@ namespace PennieNet
             using (StreamWriter writer = new StreamWriter(path))
             {
                 StringBuilder line = new StringBuilder();
-                StringBuilder notTracked = new StringBuilder();
-                StringBuilder labeller = new StringBuilder();
-
 
                 if (!_hasEnumeratedJoints)
                 {
@@ -63,14 +59,12 @@ namespace PennieNet
                     foreach (var joint in body.Joints.Values)
                     {
                         line.Append(string.Format("{0}_X,{0}_Y,{0}_Z", joint.JointType.ToString()));
-                        labeller.Append(string.Format("{0}", joint.JointType.ToString()));
                         if (joint.JointType.ToString() != JointType.ThumbRight.ToString())
                         {
                             line.Append(',');
                         }
                         nodes++;
                     }
-                    line.Append("," + labeller);
                     line.AppendLine();
 
                     _hasEnumeratedJoints = true;
@@ -101,7 +95,7 @@ namespace PennieNet
 
             if (outputFile == null)
             {
-                Result = DateTime.Now.ToString("yyy_MM_dd_HH_mm_ss") + ".csv";
+                Result = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + ".csv";
             }
             else
             {

@@ -21,8 +21,7 @@ namespace PennieNet
         FrameDescription fd;
         private float depthWidth;
         private float depthHeight;
-        private CSVLogger csvLogger;
-        private Stopwatch stopWatch;
+        Recorder csvRecorder;
         private long lastTime;
         private string batchName;
 
@@ -49,10 +48,7 @@ namespace PennieNet
                 { 
                     //this.CreateBones();
                 }
-                csvLogger = new CSVLogger();
-                stopWatch = new Stopwatch();
-                stopWatch.Start();
-                lastTime = stopWatch.ElapsedMilliseconds;
+                csvRecorder = new Recorder(3);
             }
         }
 
@@ -78,25 +74,14 @@ namespace PennieNet
 
                     if (User != null)
                     {
-                        if (!csvLogger.IsRecording)
-                        {
-                            batchName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-                            csvLogger.Start(batchName);
-                        }
-                        else if (csvLogger.IsRecording && (stopWatch.ElapsedMilliseconds - lastTime) % 3000 == 0)
-                        {
-                            csvLogger.Stop(batchName + ".csv");
-                            lastTime = stopWatch.ElapsedMilliseconds;
-                        }
-                        else
-                        {
-                            csvLogger.Update(User);
-                        }
+
                         UserId = User.TrackingId;
 
                         //USER -> FOLLOW;
                         User.Follow(depthWidth, depthHeight);
 
+                        // Record Data
+                        csvRecorder.Update(User);
                         // Update Text 
                         this.commandStatus.Text = BodyExtensions.cmd;
                     }
