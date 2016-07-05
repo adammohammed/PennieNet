@@ -8,6 +8,7 @@ namespace PennieNet
 {
     public interface ICommander
     {
-        void IssueCmd(string);
+        void IssueCmd(string cmd);
+        void Dispose();
     }
 }

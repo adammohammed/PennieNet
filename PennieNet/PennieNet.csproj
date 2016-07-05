@@ -65,6 +65,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ICommander.cs" />
     <Compile Include="Recorder.cs" />
     <Compile Include="RobotApi.cs" />
     <Page Include="MainWindow.xaml">
