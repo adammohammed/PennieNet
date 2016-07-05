@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PennieNet", "PennieNet\Penn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluetoothTests", "BluetoothTests\BluetoothTests.csproj", "{E17A9CC6-EF92-4AA8-9172-6765CE6BC3E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPy", "TestPy\TestPy.csproj", "{A8E9BE0A-6BB1-4A25-AB79-680C348BDBE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPCTest", "IPCTest\IPCTest.csproj", "{171898DF-FAF3-4982-8E2C-0C2809661EF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{E17A9CC6-EF92-4AA8-9172-6765CE6BC3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E17A9CC6-EF92-4AA8-9172-6765CE6BC3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E17A9CC6-EF92-4AA8-9172-6765CE6BC3E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E9BE0A-6BB1-4A25-AB79-680C348BDBE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E9BE0A-6BB1-4A25-AB79-680C348BDBE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E9BE0A-6BB1-4A25-AB79-680C348BDBE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E9BE0A-6BB1-4A25-AB79-680C348BDBE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171898DF-FAF3-4982-8E2C-0C2809661EF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171898DF-FAF3-4982-8E2C-0C2809661EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171898DF-FAF3-4982-8E2C-0C2809661EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171898DF-FAF3-4982-8E2C-0C2809661EF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
