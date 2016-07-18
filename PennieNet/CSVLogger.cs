@@ -24,6 +24,7 @@ namespace PennieNet
         private int nodes = 0;
         private string CSVWriteDirectory;
         private string DesktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        public int stuck = 0;
 
 
         public void Start(string date)
@@ -59,12 +60,15 @@ namespace PennieNet
                     foreach (var joint in body.Joints.Values)
                     {
                         line.Append(string.Format("{0}_X,{0}_Y,{0}_Z", joint.JointType.ToString()));
+                        
                         if (joint.JointType.ToString() != JointType.ThumbRight.ToString())
                         {
                             line.Append(',');
                         }
+                        
                         nodes++;
                     }
+                    line.Append(",Class");
                     line.AppendLine();
 
                     _hasEnumeratedJoints = true;
@@ -78,7 +82,10 @@ namespace PennieNet
                     {
                         line.Append(',');
                     }
+
                 }
+
+                line.Append("," + stuck.ToString());
 
                 writer.Write(line);
             }
