@@ -49,6 +49,7 @@ namespace PennieNet
                     //this.CreateBones();
                 }
                 csvRecorder = new Recorder(3);
+                csvRecorder.Enabled = false;
             }
         }
 

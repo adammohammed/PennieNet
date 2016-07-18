@@ -20,12 +20,14 @@ namespace IPCTest
                 Console.Write("Enter a test val: ");
                 var str = Console.ReadLine();
 
-                using (StreamWriter sw = new StreamWriter(client.GetStream()))
+                using (NetworkStream sw = client.GetStream())
                 {
-                    sw.WriteLine(str);
-                    using (StreamReader sr = new StreamReader(client.GetStream()))
+                    byte[] buff = Encoding.UTF8.GetBytes("train,1213,123,123,123");
+                    byte[] recvbuf = new byte[client.ReceiveBufferSize];
+                    sw.Write(buff, 0, buff.Length);
+                    if (sw.CanRead)
                     {
-                        Console.WriteLine(sr.ReadLine());
+                        Console.WriteLine(sw.Read(recvbuf, 0, client.ReceiveBufferSize));
                     }
                 }
 

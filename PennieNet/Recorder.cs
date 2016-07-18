@@ -10,6 +10,7 @@ namespace PennieNet
         Stopwatch watch;
         string batchName;
         int batchSize;
+        public bool Enabled = true;
 
         public Recorder(int batch_interval)
         {
@@ -20,6 +21,8 @@ namespace PennieNet
 
         public void Update(Body b)
         {
+            if (!Enabled) return;
+
             if (!csvlog.IsRecording)
             {
                 batchName = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
