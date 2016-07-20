@@ -18,7 +18,6 @@ namespace PennieNet
         public string Folder { get; protected set; }
 
         public string Result { get; protected set; }
-        private Stopwatch stopwatch;
         private long timestamp = 0;
         private Body bd;
         private int nodes = 0;
@@ -32,8 +31,6 @@ namespace PennieNet
             // This starts recording
             nodes = 0;
             IsRecording = true;
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
             Folder = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
             
             Directory.CreateDirectory(Folder);
@@ -56,7 +53,6 @@ namespace PennieNet
                 if (!_hasEnumeratedJoints)
                 {
                     bd = body;
-                    line.Append("TimeStamp,");
                     foreach (var joint in body.Joints.Values)
                     {
                         line.Append(string.Format("{0}_X,{0}_Y,{0}_Z", joint.JointType.ToString()));
@@ -68,13 +64,11 @@ namespace PennieNet
                         
                         nodes++;
                     }
-                    line.Append(",Class");
                     line.AppendLine();
 
                     _hasEnumeratedJoints = true;
                 }
 
-                line.Append(string.Format("{0},", stopwatch.ElapsedMilliseconds));
                 foreach (var joint in body.Joints.Values)
                 {
                     line.Append(string.Format("{0},{1},{2}", joint.Position.X, joint.Position.Y, joint.Position.Z));
@@ -83,10 +77,7 @@ namespace PennieNet
                         line.Append(',');
                     }
 
-                }
-
-                line.Append("," + stuck.ToString());
-
+                } 
                 writer.Write(line);
             }
             _current++;
@@ -97,9 +88,7 @@ namespace PennieNet
             // Consolidates teh multiple .line files created into a CSV File 
 
             IsRecording = false;
-            _hasEnumeratedJoints = false;
-
-            stopwatch.Stop();
+            _hasEnumeratedJoints = false; 
 
             if (outputFile == null)
             {
