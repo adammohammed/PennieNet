@@ -22,9 +22,8 @@ namespace PennieNet
         private float depthWidth;
         private float depthHeight;
         CSVLogger csvLogger;
-        //Recorder csvRecorder;
-        private long lastTime;
         private string batchName;
+        //Recorder csvRecorder;
 
         
         public MainWindow()
@@ -52,6 +51,16 @@ namespace PennieNet
                 //csvRecorder = new Recorder(3);
                 //csvRecorder.Enabled = true;
                 csvLogger = new CSVLogger();
+
+                this.KeyDown += MainWindow_KeyDown;
+            }
+        }
+
+        private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == System.Windows.Input.Key.S)
+            {
+                csvLogger.Stop(batchName);
             }
         }
 
@@ -86,8 +95,10 @@ namespace PennieNet
                         // Record Data
                         if (!csvLogger.IsRecording)
                         {
-                            csvLogger.Start(DateTime.UtcNow.ToString("HH-mm-ss"));
-                        }else
+                            batchName = DateTime.UtcNow.ToString("HH-mm-ss");
+                            csvLogger.Start(batchName);
+                        }
+                        else 
                         {
                             csvLogger.Update(User);
                         }
@@ -125,12 +136,12 @@ namespace PennieNet
                 BodyExtensions.commander.Dispose();
                 BodyExtensions.commander = null;
             }
-            csvLogger.Stop(DateTime.UtcNow.ToString("HH_mm_ss"));
         }
 
         private void ipSet_Clicked(object sender, RoutedEventArgs e)
         {
-            BodyExtensions.commander = new RobotApi(this.hostaddr.ToString(), int.Parse(this.hostport.Text));
+            BodyExtensions.commander = null;
+            //BodyExtensions.commander = new RobotApi(this.hostaddr.ToString(), int.Parse(this.hostport.Text));
 
         }
     }
