@@ -21,7 +21,8 @@ namespace PennieNet
         FrameDescription fd;
         private float depthWidth;
         private float depthHeight;
-        Recorder csvRecorder;
+        CSVLogger csvLogger;
+        //Recorder csvRecorder;
         private long lastTime;
         private string batchName;
 
@@ -48,8 +49,9 @@ namespace PennieNet
                 { 
                     //this.CreateBones();
                 }
-                csvRecorder = new Recorder(3);
-                csvRecorder.Enabled = true;
+                //csvRecorder = new Recorder(3);
+                //csvRecorder.Enabled = true;
+                csvLogger = new CSVLogger();
             }
         }
 
@@ -82,7 +84,14 @@ namespace PennieNet
                         User.Follow(depthWidth, depthHeight);
 
                         // Record Data
-                        csvRecorder.Update(User);
+                        if (!csvLogger.IsRecording)
+                        {
+                            csvLogger.Start(DateTime.UtcNow.ToString("HH-mm-ss"));
+                        }else
+                        {
+                            csvLogger.Update(User);
+                        }
+                        //csvRecorder.Update(User);
                         // Update Text 
                         this.commandStatus.Text = BodyExtensions.cmd;
                     }
@@ -116,6 +125,7 @@ namespace PennieNet
                 BodyExtensions.commander.Dispose();
                 BodyExtensions.commander = null;
             }
+            csvLogger.Stop(DateTime.UtcNow.ToString("HH_mm_ss"));
         }
 
         private void ipSet_Clicked(object sender, RoutedEventArgs e)
