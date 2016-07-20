@@ -70,7 +70,7 @@ namespace PennieNet
                 cmd = "stay";
             }
 
-            commander.IssueCmd(cmd);
+            if(commander != null) commander.IssueCmd(cmd);
         }
     }
 }
