@@ -37,6 +37,7 @@ namespace PennieNet
 
             float headPos = Head.Position.Z * 1000.0f;
             float chestPos = Chest.Position.Z * 1000.0f;
+            float spine = joints[JointType.SpineBase].Position.Y;
             float headX = Head.Position.X * 1000.0f;
 
             float angle = Math.Abs(headX / headPos);
@@ -66,6 +67,10 @@ namespace PennieNet
                 cmd = "rev";
             }
             else
+            {
+                cmd = "stay";
+            }
+            if(spine > -0.2)
             {
                 cmd = "stay";
             }
