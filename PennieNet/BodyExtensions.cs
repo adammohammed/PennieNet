@@ -70,10 +70,12 @@ namespace PennieNet
             {
                 cmd = "stay";
             }
+            /*
             if(spine > -0.2)
             {
                 cmd = "stay";
             }
+            */
 
             if(commander != null) commander.IssueCmd(cmd);
         }

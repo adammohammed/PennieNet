@@ -23,6 +23,8 @@ namespace PennieNet
         private float depthHeight;
         CSVLogger csvLogger;
         private string batchName;
+        private bool following;
+        private Stopwatch watch;
         //Recorder csvRecorder;
 
         
@@ -50,6 +52,7 @@ namespace PennieNet
                 }
                 //csvRecorder = new Recorder(3);
                 //csvRecorder.Enabled = true;
+                watch = new Stopwatch();
                 csvLogger = new CSVLogger();
 
                 this.KeyDown += MainWindow_KeyDown;
@@ -92,19 +95,39 @@ namespace PennieNet
                         //USER -> FOLLOW;
                         User.Follow(depthWidth, depthHeight);
 
+                        if (!following)
+                        {
+                            this.commandStatus.Text = "Not Recording";
+                            var shoulder = User.Joints[JointType.SpineShoulder].Position.Y;
+                            var rhand = User.Joints[JointType.HandRight].Position.Y;
+                            if (rhand > shoulder)
+                            {
+                                following = true;
+                            } 
+                        }
+
                         // Record Data
-                        if (!csvLogger.IsRecording)
+                        if (!csvLogger.IsRecording && following)
                         {
                             batchName = DateTime.UtcNow.ToString("HH-mm-ss");
+                            watch.Start();
                             csvLogger.Start(batchName);
                         }
-                        else 
+                        else if (watch.Elapsed >= TimeSpan.FromSeconds(15))
                         {
+                            csvLogger.Stop(batchName);
+                            watch.Stop();
+                            this.commandStatus.Text = "Trial Finished";
+                        }
+                        else if(csvLogger.IsRecording && following)
+                        {
+                            this.commandStatus.Text = "Recording";
                             csvLogger.Update(User);
                         }
+                       
                         //csvRecorder.Update(User);
                         // Update Text 
-                        this.commandStatus.Text = BodyExtensions.cmd;
+                        //this.commandStatus.Text = BodyExtensions.cmd;
                     }
                     else
                     {
